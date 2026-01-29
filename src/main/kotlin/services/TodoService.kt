@@ -31,4 +31,42 @@ class TodoService(private val todoRepository: ITodoRepository) : ITodoService {
             return
         }
     }
+
+    override fun updateTodo(id: Int, newTitle: String, isFinished: Boolean) {
+        val success = todoRepository.updateTodo(id, newTitle, isFinished)
+        if (!success) {
+            println("[!] Gagal memperbarui todo dengan ID: $id.")
+            return
+        }
+    }
+
+    override fun searchTodo(keyword: String) {
+        val todos = todoRepository.searchTodo(keyword)
+
+        println("Hasil Pencarian:")
+        var counter = 0
+        for (todo in todos) {
+            counter++
+            println(todo)
+        }
+
+        if (counter <= 0) {
+            println("- Data todo tidak ditemukan!")
+        }
+    }
+
+    override fun sortTodo(criteria: String) {
+        val todos = todoRepository.sortTodo(criteria)
+
+        println("Daftar Todo (Terurut):")
+        var counter = 0
+        for (todo in todos) {
+            counter++
+            println(todo)
+        }
+
+        if (counter <= 0) {
+            println("- Data todo belum tersedia!")
+        }
+    }
 }

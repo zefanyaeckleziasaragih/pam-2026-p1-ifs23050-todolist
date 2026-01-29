@@ -87,20 +87,63 @@ class TodoView(private val todoService: ITodoService) {
      * Menampilkan view update todo
      */
     fun updateTodo() {
+        println("[Memperbarui Todo]")
 
+        val strIdTodo = InputUtil.input("[ID Todo] yang diubah (x Jika Batal)")
+
+        if (strIdTodo == "x") {
+            println("[x] Pembaruan todo dibatalkan.")
+            return
+        }
+
+        val newTitle = InputUtil.input("Judul Baru (x Jika Batal)")
+
+        if (newTitle == "x") {
+            println("[x] Pembaruan todo dibatalkan.")
+            return
+        }
+
+        val strIsFinished = InputUtil.input("Selesai (true/false) (x Jika Batal)")
+
+        if (strIsFinished == "x") {
+            println("[x] Pembaruan todo dibatalkan.")
+            return
+        }
+
+        val idTodo = strIdTodo.toInt()
+        val isFinished = strIsFinished.toBoolean()
+        todoService.updateTodo(idTodo, newTitle, isFinished)
     }
 
     /**
      * Menampilkan view search todo
      */
     fun searchTodo() {
+        println("[Mencari Todo]")
 
+        val keyword = InputUtil.input("Kata kunci (x Jika Batal)")
+
+        if (keyword == "x") {
+            println("[x] Pencarian todo dibatalkan.")
+            return
+        }
+
+        todoService.searchTodo(keyword)
     }
 
     /**
      * Menampilkan view sort todo
      */
     fun sortTodo() {
+        println("[Mengurutkan Todo]")
 
+        val criteria = InputUtil.input("Urutkan berdasarkan (id/title/finished) (x Jika Batal)")
+
+        if (criteria == "x") {
+            println("[x] Pengurutan todo dibatalkan.")
+            return
+        }
+
+        todoService.sortTodo(criteria)
     }
 }
