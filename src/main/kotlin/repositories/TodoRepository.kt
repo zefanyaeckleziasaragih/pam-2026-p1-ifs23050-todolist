@@ -1,0 +1,27 @@
+package repositories
+
+import entities.Todo
+
+class TodoRepository : ITodoRepository {
+    val data = ArrayList<Todo>()
+
+    override fun getAllTodos(): ArrayList<Todo> {
+        return data
+    }
+
+    override fun addTodo(newTodo: Todo) {
+        data.add(newTodo)
+    }
+
+    override fun removeTodo(id: Int): Boolean {
+        val targetTodo = data
+            .find { it.id == id }
+
+        if (targetTodo == null) {
+            return false
+        }
+
+        data.remove(targetTodo)
+        return true
+    }
+}
