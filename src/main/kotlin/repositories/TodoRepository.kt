@@ -41,12 +41,14 @@ class TodoRepository : ITodoRepository {
         return data.filter { it.title.contains(keyword, ignoreCase = true) }
     }
 
-    override fun sortTodo(criteria: String): List<Todo> {
-        return when (criteria.lowercase()) {
+    override fun sortTodo(criteria: String, isAscending: Boolean): List<Todo> {
+        val sorted = when (criteria.lowercase()) {
             "id" -> data.sortedBy { it.id }
             "title" -> data.sortedBy { it.title }
             "finished" -> data.sortedBy { it.isFinished }
             else -> data
         }
+
+        return if (isAscending) sorted else sorted.reversed()
     }
 }

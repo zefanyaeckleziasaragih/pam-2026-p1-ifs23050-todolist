@@ -27,14 +27,17 @@ class TodoView(private val todoService: ITodoService) {
                     false
                 }
                 "2" -> {
+                    println()
                     updateTodo()
                     false
                 }
                 "3" -> {
+                    println()
                     searchTodo()
                     false
                 }
                 "4" -> {
+                    println()
                     sortTodo()
                     false
                 }
@@ -144,6 +147,14 @@ class TodoView(private val todoService: ITodoService) {
             return
         }
 
-        todoService.sortTodo(criteria)
+        val ascending = InputUtil.input("Urutkan secara ascending? (y/n)")
+
+        if (ascending == "x") {
+            println("[x] Pengurutan todo dibatalkan.")
+            return
+        }
+
+        val isAscending = ascending.lowercase() == "y"
+        todoService.sortTodo(criteria, isAscending)
     }
 }

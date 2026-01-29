@@ -43,7 +43,6 @@ class TodoService(private val todoRepository: ITodoRepository) : ITodoService {
     override fun searchTodo(keyword: String) {
         val todos = todoRepository.searchTodo(keyword)
 
-        println("Hasil Pencarian:")
         var counter = 0
         for (todo in todos) {
             counter++
@@ -55,10 +54,9 @@ class TodoService(private val todoRepository: ITodoRepository) : ITodoService {
         }
     }
 
-    override fun sortTodo(criteria: String) {
-        val todos = todoRepository.sortTodo(criteria)
+    override fun sortTodo(criteria: String, isAscending: Boolean) {
+        val todos = todoRepository.sortTodo(criteria, isAscending)
 
-        println("Daftar Todo (Terurut):")
         var counter = 0
         for (todo in todos) {
             counter++
