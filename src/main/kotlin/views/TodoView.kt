@@ -27,17 +27,14 @@ class TodoView(private val todoService: ITodoService) {
                     false
                 }
                 "2" -> {
-                    println()
                     updateTodo()
                     false
                 }
                 "3" -> {
-                    println()
                     searchTodo()
                     false
                 }
                 "4" -> {
-                    println()
                     sortTodo()
                     false
                 }
@@ -81,8 +78,13 @@ class TodoView(private val todoService: ITodoService) {
         val strIdTodo = InputUtil.input("[ID Todo] yang dihapus (x Jika Batal)")
 
         if (strIdTodo != "x") {
-            val idTodo = strIdTodo.toInt()
-            todoService.removeTodo(idTodo)
+            try {
+                val idTodo = strIdTodo.toInt()
+                todoService.removeTodo(idTodo)
+            } catch (e: NumberFormatException) {
+                println("[!] ID harus berupa angka.")
+            }
+
         }
     }
 
@@ -90,8 +92,8 @@ class TodoView(private val todoService: ITodoService) {
      * Menampilkan view update todo
      */
     fun updateTodo() {
+        println()
         println("[Memperbarui Todo]")
-
         val strIdTodo = InputUtil.input("[ID Todo] yang diubah (x Jika Batal)")
 
         if (strIdTodo == "x") {
@@ -99,38 +101,31 @@ class TodoView(private val todoService: ITodoService) {
             return
         }
 
-        val newTitle = InputUtil.input("Judul Baru (x Jika Batal)")
+        try {
+            val idTodo = strIdTodo.toInt()
+            val newTitle = InputUtil.input("Judul Baru (x Jika Batal)")
 
-        if (newTitle == "x") {
-            println("[x] Pembaruan todo dibatalkan.")
-            return
+            if (newTitle == "x") {
+                println("[x] Pembaruan todo dibatalkan.")
+                return
+            }
+
+            val strFinished = InputUtil.input("Apakah todo sudah selesai? (y/n)")
+            val isFinished = strFinished.lowercase() == "y"
+
+            todoService.updateTodo(idTodo, newTitle, isFinished)
+        } catch (e: NumberFormatException) {
+            println("[!] ID harus berupa angka.")
         }
-
-        val strIsFinished = InputUtil.input("Selesai (true/false) (x Jika Batal)")
-
-        if (strIsFinished == "x") {
-            println("[x] Pembaruan todo dibatalkan.")
-            return
-        }
-
-        val idTodo = strIdTodo.toInt()
-        val isFinished = strIsFinished.toBoolean()
-        todoService.updateTodo(idTodo, newTitle, isFinished)
     }
 
     /**
      * Menampilkan view search todo
      */
     fun searchTodo() {
+        println()
         println("[Mencari Todo]")
-
         val keyword = InputUtil.input("Kata kunci (x Jika Batal)")
-
-        if (keyword == "x") {
-            println("[x] Pencarian todo dibatalkan.")
-            return
-        }
-
         todoService.searchTodo(keyword)
     }
 
@@ -138,8 +133,8 @@ class TodoView(private val todoService: ITodoService) {
      * Menampilkan view sort todo
      */
     fun sortTodo() {
+        println()
         println("[Mengurutkan Todo]")
-
         val criteria = InputUtil.input("Urutkan berdasarkan (id/title/finished) (x Jika Batal)")
 
         if (criteria == "x") {
@@ -148,13 +143,9 @@ class TodoView(private val todoService: ITodoService) {
         }
 
         val ascending = InputUtil.input("Urutkan secara ascending? (y/n)")
-
-        if (ascending == "x") {
-            println("[x] Pengurutan todo dibatalkan.")
-            return
-        }
-
         val isAscending = ascending.lowercase() == "y"
+
         todoService.sortTodo(criteria, isAscending)
     }
 }
+
